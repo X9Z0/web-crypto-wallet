@@ -6,10 +6,14 @@ import { useState } from "react";
 import solana from "@/public/solana-sol-logo.svg";
 import eth from "@/public/ethereum-eth-logo.svg";
 import Image from "next/image";
+import ThirdPage from "./thirdPage";
+import { toast } from "sonner";
 
 export default function MainPage() {
-  const [firstPage, setFirstPage] = useState(true);
-  const [secnodPage, setSecondPage] = useState(false);
+  const [firstPage, setFirstPage] = useState<boolean>(true);
+  const [secnodPage, setSecondPage] = useState<boolean>(false);
+  const [thirdPage, setThirdPage] = useState<boolean>(false);
+  const [pathType, setPathType] = useState<string>("501");
 
   return (
     <>
@@ -61,6 +65,12 @@ export default function MainPage() {
             <Button
               className="w-96 h-16 text-xl flex justify-start bg-[#202026] hover:bg-[#131219]"
               variant={"ghost"}
+              onClick={() => {
+                setPathType("501");
+                setSecondPage(false);
+                setThirdPage(true);
+                toast.success("Solana was selected!");
+              }}
             >
               <Image
                 className="h-5 w-5 mr-4"
@@ -84,6 +94,12 @@ export default function MainPage() {
             <Button
               className="w-96 h-16 text-xl flex justify-start bg-[#202026] hover:bg-[#131219]"
               variant={"ghost"}
+              onClick={() => {
+                setPathType("60");
+                setSecondPage(false);
+                setThirdPage(true);
+                toast.success("Ethereum is selected!");
+              }}
             >
               <Image
                 className="h-5 w-5 mr-4"
@@ -97,6 +113,7 @@ export default function MainPage() {
           </motion.div>
         </div>
       )}
+      {thirdPage && <ThirdPage pathType={pathType} />}
     </>
   );
 }
