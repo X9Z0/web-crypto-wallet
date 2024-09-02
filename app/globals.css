@@ -90,3 +90,15 @@
 .grid-container {
   @apply grid grid-cols-3 gap-x-8 gap-y-3;
 }
+
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    egba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid;
+}

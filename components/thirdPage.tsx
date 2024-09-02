@@ -44,6 +44,7 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
           <p>Save this words in a safe place.</p>
         </div>
       </div>
+
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -54,7 +55,9 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
       >
         <Card
           className="group"
-          onClick={() => copyToClipboard(memonics.join(" "))}
+          onClick={() => {
+            copyToClipboard(memonics.join(" "));
+          }}
         >
           <CardContent className="p-7 ml-8 mr-8 grid-container">
             {memonics.slice(0, 12).map((word, index) => (
@@ -70,6 +73,7 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
           </CardFooter>
         </Card>
       </motion.div>
+
       <div className="flex gap-2 p-5 mt-2 hover:opacity-70 justify-center items-center">
         <Checkbox
           checked={copied}
