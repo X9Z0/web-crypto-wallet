@@ -10,14 +10,13 @@ import ThirdPage from "./thirdPage";
 import { toast } from "sonner";
 
 export default function MainPage() {
-  const [firstPage, setFirstPage] = useState<boolean>(true);
   const [secnodPage, setSecondPage] = useState<boolean>(false);
   const [thirdPage, setThirdPage] = useState<boolean>(false);
   const [pathType, setPathType] = useState<string>("501");
 
   return (
     <>
-      {firstPage && (
+      {!secnodPage && !thirdPage && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -42,7 +41,6 @@ export default function MainPage() {
             <Button
               className="h-10 w-56 text-lg"
               onClick={() => {
-                setFirstPage(false);
                 setSecondPage(true);
               }} // Hide the first page when the button is clicked
             >
