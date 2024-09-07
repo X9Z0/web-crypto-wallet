@@ -7,7 +7,8 @@ import { Copy } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
-import { generateMnemonic, mnemonicToSeedSync } from "bip39";
+import { generateMnemonic } from "bip39";
+import FourthPage from "./fourthPage";
 
 interface ThirdPageProps {
   pathType: string;
@@ -100,8 +101,8 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
         </motion.div>
       )}
       {fourthPage && (
-        <div className="border-2 border-slate-100 max-w-7xl mx-auto">
-          FourthPage
+        <div>
+          <FourthPage pathType={pathType} memonics={memonics.join(" ")} />
         </div>
       )}
     </>
