@@ -24,7 +24,7 @@ export default function MainPage() {
             duration: 0.3,
             ease: "easeInOut",
           }}
-          className="flex gap-4 flex-col my-12"
+          className="h-screen flex justify-center items-center gap-4 flex-col my-12"
         >
           <div className="p-6 mb-6 flex justify-center items-center">
             <Avatar className="aspect-square relative flex h-32 w-32 shrink-0 overflow-hidden rounded-full">
@@ -50,7 +50,7 @@ export default function MainPage() {
         </motion.div>
       )}
       {secnodPage && (
-        <div className="flex-col justify-center items-center">
+        <div className="h-screen flex flex-col justify-center items-center">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

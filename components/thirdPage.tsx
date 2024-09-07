@@ -7,7 +7,7 @@ import { Copy } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
-import { generateMnemonic } from "bip39";
+import { generateMnemonic, mnemonicToSeedSync } from "bip39";
 import FourthPage from "./fourthPage";
 
 interface ThirdPageProps {
@@ -18,6 +18,7 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
   const [memonics, setMemonics] = useState<string[]>(Array(12).fill(" "));
   const [copied, setCopied] = useState<boolean>(false);
   const [fourthPage, setFourthPage] = useState<boolean>(false);
+  const [seed, setSeed] = useState<Buffer>(Buffer.alloc(0));
 
   useEffect(() => {
     const newMnemonic: string = generateMnemonic();
@@ -39,6 +40,7 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
             duration: 0.3,
             ease: "easeInOut",
           }}
+          className="h-screen flex flex-col justify-center items-center "
         >
           <div className="mb-9">
             <div className="flex justify-center items-center font-bold mb-4 text-4xl">
@@ -91,6 +93,8 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
             <Button
               onClick={() => {
                 setFourthPage(true);
+                const seed = mnemonicToSeedSync(memonics.join(" "));
+                setSeed(seed);
               }}
               className="w-64 rounded-lg"
               disabled={!copied}
@@ -102,7 +106,7 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
       )}
       {fourthPage && (
         <div>
-          <FourthPage pathType={pathType} memonics={memonics.join(" ")} />
+          <FourthPage pathType={pathType} seed={seed} />
         </div>
       )}
     </>

@@ -6,10 +6,8 @@ import ThirdPage from "@/components/thirdPage";
 import FourthPage from "@/components/fourthPage";
 export default function Home() {
   return (
-    <main className="h-screen flex justify-center items-center">
-      {/* <MainPage /> */}
-      {/* <ThirdPage pathType="501" /> */}
-      <FourthPage />
+    <main>
+      <MainPage />
     </main>
   );
 }
