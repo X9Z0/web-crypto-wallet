@@ -203,6 +203,7 @@ export default function FourthPage({ seed, pathType }: FourthProps) {
       >
         {wallets.map((wallet) => (
           <TileWallet
+            key={wallet.id}
             onDelete={deleteACard}
             privatekey={wallet.privatekey}
             publickey={wallet.publickey}
