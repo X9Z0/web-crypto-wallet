@@ -55,7 +55,7 @@ interface FourthProps {
   pathType: string;
 }
 export default function FourthPage({ seed, pathType }: FourthProps) {
-  const [gridView, setGridView] = useState<boolean>(false);
+  const [gridView, setGridView] = useState<boolean>(true);
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [walletCount, setWalletCount] = useState<number>(1);
 
@@ -151,16 +151,18 @@ export default function FourthPage({ seed, pathType }: FourthProps) {
           <h1>{pathType === "501" ? "Solana" : "Ethereum"} Wallet</h1>
         </div>
         <div className="flex justify-center items-center gap-3 p-2">
-          <Button
-            onClick={() => {
-              {
-                gridView ? setGridView(false) : setGridView(true);
-              }
-            }}
-            variant={"secondary"}
-          >
-            {gridView ? <Grid2X2 /> : <List />}
-          </Button>
+          {wallets.length > 1 && (
+            <Button
+              onClick={() => {
+                {
+                  gridView ? setGridView(false) : setGridView(true);
+                }
+              }}
+              variant={"secondary"}
+            >
+              {gridView ? <Grid2X2 /> : <List />}
+            </Button>
+          )}
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"} className="h-10">

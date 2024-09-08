@@ -69,7 +69,7 @@ export default function MainPage() {
             className="flex justify-center items-center p-2"
           >
             <Button
-              className="w-96 h-16 text-xl bg-slate-100 flex justify-start dark:bg-[#202026] dark:hover:bg-[#131219]"
+              className="w-96 h-16 text-xl hover:bg-slate-200 bg-slate-100 flex justify-start dark:bg-[#202026] dark:hover:bg-[#131219]"
               variant={"ghost"}
               onClick={() => {
                 setPathType("501");
@@ -98,7 +98,7 @@ export default function MainPage() {
             className="flex justify-center items-center p-2 "
           >
             <Button
-              className="w-96 h-16 text-xl bg-slate-100 flex justify-start dark:bg-[#202026] dark:hover:bg-[#131219]"
+              className="w-96 h-16 text-xl hover:bg-slate-200 bg-slate-100 flex justify-start dark:bg-[#202026] dark:hover:bg-[#131219]"
               variant={"ghost"}
               onClick={() => {
                 setPathType("60");
