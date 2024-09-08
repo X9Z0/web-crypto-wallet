@@ -21,9 +21,15 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
   const [seed, setSeed] = useState<Buffer>(Buffer.alloc(0));
 
   useEffect(() => {
-    const newMnemonic: string = generateMnemonic();
-    const wordArray: string[] = newMnemonic.split(" ");
-    setMemonics(wordArray);
+    const seedLS = localStorage.getItem("seed");
+    if (seedLS) {
+      setFourthPage(true);
+      setSeed(JSON.parse(seedLS));
+    } else {
+      const newMnemonic: string = generateMnemonic();
+      const wordArray: string[] = newMnemonic.split(" ");
+      setMemonics(wordArray);
+    }
   }, []);
 
   const copyToClipboard = (content: string) => {
@@ -95,6 +101,9 @@ export default function ThirdPage({ pathType }: ThirdPageProps) {
                 setFourthPage(true);
                 const seed = mnemonicToSeedSync(memonics.join(" "));
                 setSeed(seed);
+                localStorage.setItem("path", JSON.stringify(pathType));
+                localStorage.setItem("seed", JSON.stringify(seed));
+                toast.success("Wallet initialized!");
               }}
               className="w-64 rounded-lg"
               disabled={!copied}

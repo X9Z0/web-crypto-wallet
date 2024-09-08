@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import solana from "@/public/solana-sol-logo.svg";
 import eth from "@/public/ethereum-eth-logo.svg";
 import Image from "next/image";
@@ -13,6 +13,14 @@ export default function MainPage() {
   const [secnodPage, setSecondPage] = useState<boolean>(false);
   const [thirdPage, setThirdPage] = useState<boolean>(false);
   const [pathType, setPathType] = useState<string>("501");
+
+  useEffect(() => {
+    const path = localStorage.getItem("path");
+    if (path) {
+      setThirdPage(true);
+      setPathType(JSON.parse(path));
+    }
+  }, []);
 
   return (
     <>
@@ -61,7 +69,7 @@ export default function MainPage() {
             className="flex justify-center items-center p-2"
           >
             <Button
-              className="w-96 h-16 text-xl flex justify-start bg-[#202026] hover:bg-[#131219]"
+              className="w-96 h-16 text-xl bg-slate-100 flex justify-start dark:bg-[#202026] dark:hover:bg-[#131219]"
               variant={"ghost"}
               onClick={() => {
                 setPathType("501");
@@ -90,7 +98,7 @@ export default function MainPage() {
             className="flex justify-center items-center p-2 "
           >
             <Button
-              className="w-96 h-16 text-xl flex justify-start bg-[#202026] hover:bg-[#131219]"
+              className="w-96 h-16 text-xl bg-slate-100 flex justify-start dark:bg-[#202026] dark:hover:bg-[#131219]"
               variant={"ghost"}
               onClick={() => {
                 setPathType("60");

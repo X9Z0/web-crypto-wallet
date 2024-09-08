@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Grid2X2, List } from "lucide-react";
 import { TileWallet } from "./tile-wallet";
@@ -9,6 +9,19 @@ import { derivePath } from "ed25519-hd-key";
 import { Keypair } from "@solana/web3.js";
 import { hdkey } from "ethereumjs-wallet";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Wallet {
   id: number;
@@ -46,6 +59,15 @@ export default function FourthPage({ seed, pathType }: FourthProps) {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [walletCount, setWalletCount] = useState<number>(1);
 
+  useEffect(() => {
+    const walletLS = localStorage.getItem("wallet");
+    const walletCountLS = localStorage.getItem("count");
+    if (walletLS && walletCountLS) {
+      setWallets(JSON.parse(walletLS));
+      setWalletCount(JSON.parse(walletCountLS));
+    }
+  }, []);
+
   const addWallet = () => {
     const path = `m/44'/${pathType}'/${walletCount}'/0'`;
 
@@ -78,24 +100,55 @@ export default function FourthPage({ seed, pathType }: FourthProps) {
       privatekey: privatekeyEncoded,
       publickey: publickeyEncoded,
     };
-
-    // Update the wallet state
-    setWallets((prevWallets) => [...prevWallets, newWallet]);
-
-    // Increment wallet count
-    setWalletCount((prevCount) => prevCount + 1);
+    setWallets((prevWallets) => {
+      const updatedWallets = [...prevWallets, newWallet];
+      localStorage.setItem("wallet", JSON.stringify(updatedWallets));
+      return updatedWallets;
+    });
+    setWalletCount((prevCount) => {
+      const updatedCount = prevCount + 1;
+      localStorage.setItem("count", JSON.stringify(updatedCount));
+      return updatedCount;
+    });
     toast.success("new Wallet is added!");
+  };
+
+  const deleteAll = () => {
+    localStorage.removeItem("path");
+    localStorage.removeItem("seed");
+    localStorage.removeItem("count");
+    localStorage.removeItem("wallet");
+    setWallets([]);
+    setWalletCount(1);
+    toast.success("wallets deleted successfully");
   };
 
   const deleteACard = (id: number) => {
     const updatedWallets = wallets.filter((wallet) => wallet.id !== id);
+    const updatedCount = updatedWallets.length;
+
     setWallets(updatedWallets);
+    setWalletCount(updatedCount);
+
+    localStorage.setItem("wallet", JSON.stringify(updatedWallets));
+    localStorage.setItem("count", JSON.stringify(updatedCount));
+
+    toast.success("Wallet deleted successfully!");
   };
+
   return (
     <div className="mx-auto h-full w-2/3 flex-none">
-      <div className="flex justify-between p-2 mt-2">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }}
+        className="flex justify-between p-2 mt-2"
+      >
         <div className="p-2 font-bold font- text-center text-4xl">
-          <h1>Solana Wallet</h1>
+          <h1>{pathType === "501" ? "Solana" : "Ethereum"} Wallet</h1>
         </div>
         <div className="flex justify-center items-center gap-3 p-2">
           <Button
@@ -108,15 +161,40 @@ export default function FourthPage({ seed, pathType }: FourthProps) {
           >
             {gridView ? <Grid2X2 /> : <List />}
           </Button>
-          <Button variant={"destructive"} className="h-10">
-            Delete all wallet
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={"destructive"} className="h-10">
+                Delete all wallet
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absoultely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will delete all the wallet and the process will
+                  restart
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={deleteAll}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Button className="h-10" onClick={addWallet}>
             Add wallet
           </Button>
         </div>
-      </div>
-      <div
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }}
         className={`p-4 ${
           gridView ? "flex gap-4 flex-col" : "grid-container"
         } `}
@@ -129,7 +207,7 @@ export default function FourthPage({ seed, pathType }: FourthProps) {
             id={wallet.id}
           />
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
